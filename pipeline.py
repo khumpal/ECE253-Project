@@ -31,13 +31,11 @@ except ImportError:
     print("WARNING: ultralytics not installed → YOLO metrics will be None.")
 
 
-# ============================================================
-# CONFIG
-# ============================================================
+
 BASE_DIR = r"C:\Users\khump\OneDrive\Desktop\ECE253Project"  # update as needed
 
-MULTI_DIR   = os.path.join(BASE_DIR, "multi_degraded_100k")
-LABELS_CSV  = os.path.join(MULTI_DIR, "labels_multitask.csv")
+MULTI_DIR   = os.path.join(BASE_DIR, "multi_degraded_tiny")
+LABELS_CSV  = os.path.join(MULTI_DIR, "labels_multitask_tiny.csv")
 
 CLEAN_IMAGE_PATH   = None
 NATURAL_IMAGE_PATH = None
@@ -76,11 +74,7 @@ print("Using device:", device)
 # MULTITASK MODEL
 # ============================================================
 class MultiTaskResNet(nn.Module):
-    """
-    Same as in training:
-      - cls_head: 3 logits (blur, fog, lowlight)
-      - reg_head: 2 outputs (L_norm, theta_norm)
-    """
+
     def __init__(self, backbone, num_feats):
         super().__init__()
         self.backbone = backbone
@@ -115,9 +109,7 @@ model.eval()
 print("Model loaded.\n")
 
 
-# ============================================================
-# METRIC MODELS (LPIPS, YOLO)
-# ============================================================
+
 lpips_model = None
 if lpips is not None:
     lpips_model = lpips.LPIPS(net='alex').to(device)
